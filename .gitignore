@@ -7,8 +7,12 @@
 # Obsidian 本地回收站
 .trash/
 
-# AI 助手工作数据（隐私，不同步）
+# 本地首页（仅存在于本机，不随库同步）
+欢迎.md
+
+# AI 助手工作数据（隐私，不同步；含 .workbuddy/memory/）
 .workbuddy/
+.workbuddy/memory/
 
 # 系统文件
 .DS_Store

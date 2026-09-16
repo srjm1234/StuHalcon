@@ -6,7 +6,6 @@ HALCON 机器视觉学习笔记库（Obsidian Vault）。
 
 ```
 StuHalcon/
-├── 欢迎.md                  # 仓库首页导航
 ├── Halcon学习笔记/           # 整理后的笔记（11 篇）
 │   ├── 00 Halcon学习地图.md  # MOC：知识地图与索引，建议从这里开始
 │   ├── 01 ~ 09 ...          # 分主题笔记
@@ -62,6 +61,7 @@ StuHalcon/
 在 Obsidian 中打开本库后，插件即会按上述节奏自动 `commit → pull → push`。
 手动同步可用命令面板（`Ctrl+P`）执行 **Git: Commit-and-sync**。
 
-被 `.gitignore` 排除的本地文件：`.obsidian/workspace*.json`、`.obsidian/cache`、
-`.obsidian/plugins/obsidian-git/data.json`（每台机器各自保留）、`.workbuddy/`、`.trash/`。
+被 `.gitignore` 排除的本地文件（仅存在于本机，不随库同步）：
+`.obsidian/workspace*.json`、`.obsidian/cache`、`.obsidian/plugins/obsidian-git/data.json`、
+`欢迎.md`（本地首页导航）、`.workbuddy/`（含 `.workbuddy/memory/`）、`.trash/`。
 
