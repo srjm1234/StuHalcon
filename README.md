@@ -46,3 +46,22 @@ StuHalcon/
 - 笔记正文只改 `Halcon学习笔记/`，`note/` 作为原始素材保持不动。
 - Obsidian 不支持 BMP 预览，笔记内嵌图片统一放在 `Halcon学习笔记/assets/` 下（PNG）。
 - 笔记之间用 `[[双链]]` 关联；文件名与标题中不要出现 `#`（会被 Obsidian 当作锚点解析）。
+
+## 自动同步
+
+本库已安装 **obsidian-git** 插件（2.39.0），配置与 `StuC#` 库一致：
+
+| 设置 | 值 |
+|---|---|
+| 自动提交 | 文件变更后触发，间隔 1 分钟 |
+| 自动拉取 | 每 300 秒 |
+| 自动推送 | 每 300 秒 |
+| 启动时拉取 | 开启 |
+| 同步方式 | merge（推送前先拉取） |
+
+在 Obsidian 中打开本库后，插件即会按上述节奏自动 `commit → pull → push`。
+手动同步可用命令面板（`Ctrl+P`）执行 **Git: Commit-and-sync**。
+
+被 `.gitignore` 排除的本地文件：`.obsidian/workspace*.json`、`.obsidian/cache`、
+`.obsidian/plugins/obsidian-git/data.json`（每台机器各自保留）、`.workbuddy/`、`.trash/`。
+

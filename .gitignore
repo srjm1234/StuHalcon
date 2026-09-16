@@ -1,14 +1,21 @@
-# Obsidian 工作区状态（每次开关窗口都会变，多机同步容易冲突）
+# Obsidian 临时文件（不同步到 GitHub）
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
 .obsidian/cache
+.obsidian/plugins/obsidian-git/data.json
 
 # Obsidian 本地回收站
 .trash/
 
-# 系统与编辑器杂项
+# AI 助手工作数据（隐私，不同步）
+.workbuddy/
+
+# 系统文件
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# 临时文件
 *.tmp
+*.log
 *~
