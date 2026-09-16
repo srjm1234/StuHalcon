@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="17.12">
+<procedure name="main">
+<interface/>
+<body>
+<c>*读取文件夹 </c>
+<l>list_files ('套环检测', 'files', Files)</l>
+<l>read_image (Image, Files[0])</l>
+<c>*得到图片的尺寸  </c>
+<l>get_image_size (Image, Width, Height)</l>
+<c>*关闭原来窗口 </c>
+<l>dev_close_window ()</l>
+<c>*打开新窗口 , 新窗口跟图像的宽高一致</c>
+<l>dev_open_window (0, 0, Width, Height, 'black', WindowHandle)</l>
+<l>dev_display (Image)</l>
+<c>**循环加载文件夹里面的所有图片</c>
+<l>for Index := 0 to |Files| -1 by 1</l>
+<l>    read_image (Image, Files[Index])</l>
+<c>    *二值化处理</c>
+<l>    threshold (Image, Regions, 192, 255)</l>
+<c>    *连通域处理 , 分割 </c>
+<l>    connection (Regions, ConnectedRegions)</l>
+<c>    *过滤赛选</c>
+<l>    select_shape (ConnectedRegions, SelectedRegions, \
+                  ['area','max_diameter','inner_radius'], 'and', [0,22.54,8.7], [213574,91.72,200])</l>
+<l>    dev_set_color ('blue')</l>
+<l>    dev_clear_window ()</l>
+<l>    dev_display (Image)</l>
+<l>    dev_display (SelectedRegions)</l>
+<c>    *获取区域集合中的所有数据的,坐标和面积 </c>
+<l>    area_center (SelectedRegions, Area, Row, Column)</l>
+<c>    **个数 </c>
+<l>    num := |Area|</l>
+<c>    *显示个数  (显示的内容 , 显示在窗口上 , x坐标, y坐标)</c>
+<l>    dev_disp_text ('个数'+num, 'window', 100, 100, 'blue', ['border_radius'], [1])</l>
+<c>    *每一个的中间都显示面积的信息</c>
+<l>    for Index1 := 0 to num-1 by 1</l>
+<l>        dev_disp_text (Area[Index1], 'image', Row[Index1], Column[Index1], 'black', [], [])</l>
+<l>    endfor</l>
+<l>    stop ()</l>
+<l>endfor</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

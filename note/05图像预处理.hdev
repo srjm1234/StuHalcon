@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="17.12">
+<procedure name="main">
+<interface/>
+<body>
+<c>*图像 预处理</c>
+<l>read_image (Image, 'printer_chip/printer_chip_01')</l>
+<c>*乘以常量 , 加减常量 (第一个参数是乘以, 第二个加减)</c>
+<l>scale_image (Image, ImageScaled,1, 50)</l>
+<c>*两张图片相减  </c>
+<l>sub_image (ImageScaled, Image, ImageSub, 1, 0)</l>
+<c></c>
+<c>*加载图片</c>
+<l>read_image (Image1, 'crystal.png')</l>
+<c>*平滑  均值滤波 (可以扫尾去除一些噪点 , 但是会减少图像特征)</c>
+<l>mean_image (Image1, ImageMean, 6, 6)</l>
+<c>*中值滤波 </c>
+<l>median_image (Image1, ImageMedian, 'circle', 6, 'mirrored')</l>
+<c>*图像增强 (增加对比度)</c>
+<l>emphasize (ImageSub, ImageEmphasize, 10, 10, 2)</l>
+<c>*图像增强 (增加亮度)</c>
+<l>illuminate (ImageSub, ImageIlluminate, 200,200,2)</l>
+<l>stop ()</l>
+<c></c>
+<c>*形态学调整</c>
+<c>*膨胀 , 腐蚀 , 打开 , 关闭 </c>
+<l>read_image (Image2, 'x5.bmp')</l>
+<c>*二值化处理 </c>
+<l>threshold (Image2, Region, 128, 255)</l>
+<c>*膨胀 区域  </c>
+<l>dilation_circle (Region, RegionDilation, 3.5)</l>
+<c>*腐蚀 </c>
+<l>erosion_circle (Region, RegionErosion, 3.5)</l>
+<l>stop ()</l>
+<l>dev_clear_window ()</l>
+<c></c>
+<c>*开运算 (先腐蚀, 后膨胀,去除白点)</c>
+<l>read_image (Image3, 'x2.bmp')</l>
+<l>threshold (Image3, Region1, 128, 255)</l>
+<l>opening_circle (Region1, RegionOpening, 3.5)</l>
+<c></c>
+<c>*闭运算  (先膨胀后腐蚀 : 去除黑点)</c>
+<l>read_image (Image4, 'x4.bmp')</l>
+<l>threshold (Image4, Region2, 128, 255)</l>
+<l>closing_circle (Region2, RegionClosing, 6)</l>
+<c></c>
+<c>*形态学调整 一般都是搭配着二值化化处理来使用</c>
+<l>read_image (Image5, 'wood_knots')</l>
+<c>*二值化处理</c>
+<l>threshold (Image5, Region3, 8, 100)</l>
+<c>*分割</c>
+<l>connection (Region3, ConnectedRegions)</l>
+<c>*图像预处理  (开运算)</c>
+<l>opening_circle (ConnectedRegions, RegionOpening1, 3.5)</l>
+<c>*过滤</c>
+<l>select_shape (RegionOpening1, SelectedRegions, 'area', 'and', 50, 500)</l>
+<c>*显示 </c>
+<l>dev_clear_window ()</l>
+<l>dev_display (Image5)</l>
+<l>dev_display (SelectedRegions)</l>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

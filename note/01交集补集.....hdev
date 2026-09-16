@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="17.12">
+<procedure name="main">
+<interface/>
+<body>
+<c>*交集 , 补集 , 反选 , 合并</c>
+<l>dev_close_window ()</l>
+<l>dev_open_window (0, 0, 512, 512, 'black', WindowHandle)</l>
+<c>*设置显示模式 (显示成轮廓:margin , 显示区域: fill)</c>
+<l>dev_set_draw ('fill')</l>
+<c>*画圆</c>
+<l>draw_circle (WindowHandle, Row, Column, Radius)</l>
+<l>gen_circle (Circle, Row, Column, Radius)</l>
+<c>*画圆</c>
+<l>draw_circle (WindowHandle, Row1, Column1, Radius1)</l>
+<l>gen_circle (Circle1, Row1, Column1, Radius1)</l>
+<c>*交集</c>
+<l>intersection (Circle, Circle1, RegionIntersection)</l>
+<c>*清空窗口</c>
+<l>dev_clear_window ()</l>
+<c>*显示交集</c>
+<l>dev_display (RegionIntersection)</l>
+<c>*补集 </c>
+<l>difference (Circle, Circle1, RegionDifference)</l>
+<l>dev_clear_window ()</l>
+<l>dev_display (RegionDifference)</l>
+<c>*反选 </c>
+<l>complement (Circle, RegionComplement)</l>
+<l>dev_clear_window ()</l>
+<l>dev_display (RegionComplement)</l>
+<c>*合并区域</c>
+<l>union2 (Circle, Circle1, RegionUnion)</l>
+<l>dev_clear_window ()</l>
+<l>dev_display (RegionUnion)</l>
+<c>*获取两个区域合并后的区域 , 与两个区域交集的补集</c>
+<l>symm_difference (Circle, Circle1, RegionDifference1)</l>
+<l>dev_clear_window ()</l>
+<l>dev_display (RegionDifference1)</l>
+<c></c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

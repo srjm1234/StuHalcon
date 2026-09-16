@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="17.12">
+<procedure name="main">
+<interface/>
+<body>
+<c>*二值化处理过滤</c>
+<l>read_image (Image, 'audi2')</l>
+<l>dev_close_window ()</l>
+<l>dev_open_window (0, 0, 512, 512, 'black', WindowHandle)</l>
+<c>*二值化处理</c>
+<c>*设置显示模式,显示颜色</c>
+<l>dev_set_color ('green')</l>
+<l>dev_set_draw ('fill')</l>
+<c>*第一步: 二值化处理</c>
+<l>threshold (Image, Regions, 0, 100)</l>
+<c>*看效果 </c>
+<l>dev_display (Image)</l>
+<l>dev_display (Regions)</l>
+<c>*第二步: 分割</c>
+<l>connection (Regions, ConnectedRegions)</l>
+<c>*看效果</c>
+<l>dev_clear_window ()</l>
+<l>dev_display (Image)</l>
+<l>dev_display (ConnectedRegions)</l>
+<c>*第三步: 赛选(通过: 面积,宽度,高度)</c>
+<l>select_shape (ConnectedRegions, SelectedRegions, \
+              ['area','width','height'], 'and', [527.98,38.54,54.38], [10454.1,63.89,1000])</l>
+<c>*最终效果 </c>
+<l>dev_set_color ('pink')</l>
+<l>*dev_set_draw ('margin')</l>
+<l>dev_clear_window ()</l>
+<l>dev_display (Image)</l>
+<l>dev_display (SelectedRegions)</l>
+<c></c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

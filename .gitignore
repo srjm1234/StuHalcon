@@ -1,0 +1,14 @@
+# Obsidian 工作区状态（每次开关窗口都会变，多机同步容易冲突）
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+
+# Obsidian 本地回收站
+.trash/
+
+# 系统与编辑器杂项
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*~

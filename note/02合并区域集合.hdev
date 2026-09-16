@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="17.12">
+<procedure name="main">
+<interface/>
+<body>
+<l>dev_close_window ()</l>
+<l>dev_open_window (0, 0, 512, 512, 'black', WindowHandle)</l>
+<c>*加载图片 </c>
+<l>read_image (Image, 'printer_chip/printer_chip_01')</l>
+<c>*二值化处理  </c>
+<l>threshold (Image, Region, 128, 255)</l>
+<c>*分割 区域 </c>
+<l>connection (Region, ConnectedRegions)</l>
+<c>*合并区域集合  </c>
+<l>union1 (ConnectedRegions, RegionUnion)</l>
+<l>dev_clear_window ()</l>
+<l>dev_display (RegionUnion)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

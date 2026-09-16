@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="17.12">
+<procedure name="main">
+<interface/>
+<body>
+<l>read_image (Image, 'clip')</l>
+<c>*获取图片大小</c>
+<l>get_image_size (Image, Width, Height)</l>
+<l>dev_close_window ()</l>
+<l>dev_open_window (0, 0, Width, Height, 'black', WindowHandle)</l>
+<l>dev_display (Image)</l>
+<c>*二值化处理 </c>
+<l>threshold (Image, Region, 0, 100)</l>
+<c>*分割</c>
+<l>connection (Region, ConnectedRegions)</l>
+<c>*赛选</c>
+<l>select_shape (ConnectedRegions, SelectedRegions, 'area', 'and', 3500, 8107.97)</l>
+<c>*看效果 </c>
+<l>dev_set_color ('blue')</l>
+<l>dev_clear_window ()</l>
+<l>dev_display (Image)</l>
+<l>dev_display (SelectedRegions)</l>
+<c>*获取坐标和面积</c>
+<l>area_center (SelectedRegions, Area, X, Y)</l>
+<c></c>
+<c>*挨个显示</c>
+<l>*for Index := 0 to |Area| -1 by 1</l>
+<l>    *dev_disp_text (Area[Index], 'window', X[Index], Y[Index], 'black', [], [])</l>
+<l>*endfor</l>
+<c>*获取角度</c>
+<l>orientation_region (SelectedRegions, Phi)</l>
+<c>*显示角度 </c>
+<l>disp_message (WindowHandle, deg(Phi)$'3.2f'+'deg', 'window', X, Y, 'black', 'false')</l>
+<c>*设置线宽 </c>
+<l>dev_set_line_width (3)</l>
+<l>dev_set_color ('yellow')</l>
+<c>*画箭头 </c>
+<l>disp_arrow (WindowHandle, X, Y,  X-100*sin(Phi), Y+100*cos(Phi), 3)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
