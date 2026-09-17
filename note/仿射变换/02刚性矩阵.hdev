@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="17.12">
+<procedure name="main">
+<interface/>
+<body>
+<c>*刚性矩阵 </c>
+<c>*关闭窗口</c>
+<l>dev_close_window ()</l>
+<c>*加载图片</c>
+<l>read_image (Image, 'printer_chip/printer_chip_01')</l>
+<c>*获取图片大小</c>
+<l>get_image_size (Image, Width, Height)</l>
+<c>*打开新窗口</c>
+<l>dev_open_window (0, 0, Width/3, Height/3, 'black', WindowHandle)</l>
+<c>*显示图片</c>
+<l>dev_display (Image)</l>
+<c>*获取取图像中心</c>
+<l>area_center (Image, Area, Row, Column)</l>
+<c>*获取图像的角度 </c>
+<l>orientation_region (Image, Phi)</l>
+<c>*刚性矩阵 , 从一个位置的角度和坐标 , 变换成另一个的角度和坐标</c>
+<l>vector_angle_to_rigid (Row, Column, -rad(360), Row+100, Column+100, -rad(350), HomMat2D)</l>
+<c>*仿射变换 </c>
+<l>affine_trans_image (Image, ImageAffineTrans, HomMat2D, 'constant', 'false')</l>
+<l>dev_clear_window ()</l>
+<l>dev_display (ImageAffineTrans)</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

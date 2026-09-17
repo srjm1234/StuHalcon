@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="17.12">
+<procedure name="main">
+<interface/>
+<body>
+<c>*获取矩阵的参数  </c>
+<l>dev_clear_window ()</l>
+<c>*获取窗口句柄</c>
+<l>dev_get_window (WindowHandle)</l>
+<l>read_image (Image, 'printer_chip/printer_chip_01')</l>
+<c>*创建矩阵 句柄 </c>
+<l>hom_mat2d_identity (HomMat2DIdentity)</l>
+<c>*设置矩阵参数 (旋转)</c>
+<l>hom_mat2d_rotate (HomMat2DIdentity, rad(-45), 0, 0, HomMat2DRotate)</l>
+<c>*缩放</c>
+<l>hom_mat2d_scale (HomMat2DRotate, 0.8, 0.8, 0, 0, HomMat2DScale)</l>
+<c>*平移 </c>
+<l>hom_mat2d_translate (HomMat2DScale, 64, 64, HomMat2DTranslate)</l>
+<c></c>
+<c>*仿射变换  </c>
+<l>affine_trans_image (Image, ImageAffineTrans, HomMat2DTranslate, 'constant', 'false')</l>
+<c></c>
+<c>*获取矩阵的参数  (Sx,Sy 缩放的数据  , Phi旋转角度数据 , Theta斜切的数据 , Tx.Ty 是平移的数据)</c>
+<l>hom_mat2d_to_affine_par (HomMat2DTranslate, Sx, Sy, Phi, Theta, Tx, Ty)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

@@ -50,6 +50,19 @@ flowchart TD
     G --> H[8 结果可视化 dev_disp_text / disp_arrow]
 ```
 
+> [!tip] 第 7 步之后还有一条支线：几何变换
+> 拿到 `(Row, Column, Phi)` 之后，除了直接显示，还能用它们**构造齐次矩阵**，把目标搬到想要的位置 —— 这就是 [[11 仿射变换矩阵与图像变换]] 与 [[12 仿射变换实战 区域轮廓与抠图]] 的内容：
+>
+> ```mermaid
+> flowchart LR
+>     G["7 测量<br/>Row, Column, Phi"] --> M["构造 HomMat2D<br/>vector_angle_to_rigid"]
+>     M --> T1["affine_trans_image<br/>变换图像（要重采样）"]
+>     M --> T2["affine_trans_region<br/>变换区域（二值掩膜）"]
+>     M --> T3["affine_trans_contour_xld<br/>变换轮廓（最快最准）"]
+>     M --> T4["reduce_domain + crop_domain<br/>抠出 ROI 当模板"]
+> ```
+> 一句话概括：**测量给出"目标在哪、朝向如何"，仿射变换负责"把它挪到该在的地方"。**
+
 ## 三、笔记索引
 
 | 序号 | 笔记 | 一句话内容 | 对应源码 |
@@ -64,6 +77,8 @@ flowchart TD
 | 08 | [[08 实战 套环检测]] | 遍历文件夹批量检测并计数 | `04套环检测.hdev` |
 | 09 | [[09 实战 曲别针计数与角度]] | 计数 + 方向主轴可视化 | `05曲别针练习.hdev` |
 | 10 | [[10 算子速查表]] | 按功能分类的算子索引 | —— |
+| 11 | [[11 仿射变换矩阵与图像变换]] | 齐次矩阵、Row/Column 约定、刚性矩阵、反解参数 | `仿射变换/01~03*.hdev` |
+| 12 | [[12 仿射变换实战 区域轮廓与抠图]] | 三对象变换、区域↔轮廓、ROI 抠图 | `仿射变换/04~07*.hdev` |
 
 ## 四、算子命名规律（会读名字就会用一半）
 
@@ -93,6 +108,11 @@ flowchart TD
 - [ ] `area_center` 输出的 `Row` / `Column` 分别对应 x 还是 y？
 - [ ] `orientation_region` 返回的是角度还是弧度？范围是多少？
 - [ ] `|Area|` 这种写法是在求什么？
+- [ ] `HomMat2D` 在 HALCON 里存成几个数？按什么顺序排？
+- [ ] 齐次矩阵变换图像时，`Px` 该传 Row 还是 Column？正角度在屏幕上往哪边转？
+- [ ] 多个 `hom_mat2d_*` 叠加时，先写的先作用还是后写的先作用？固定点该写哪个坐标系下的位置？
+- [ ] `affine_trans_image` / `region` / `contour_xld` 三者分别适合什么场景？
+- [ ] `reduce_domain` 和 `crop_domain` 谁改变了图像矩阵的尺寸？
 
 ## 六、环境与快捷键备忘
 

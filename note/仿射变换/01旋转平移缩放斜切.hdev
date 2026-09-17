@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="17.12">
+<procedure name="main">
+<interface/>
+<body>
+<c>*仿射变换 , 旋转 , 平移 , 缩放 , 斜切 ......</c>
+<l>dev_close_window ()</l>
+<l>read_image (Image, 'printer_chip/printer_chip_01')</l>
+<l>dev_open_window (0, 0, 512, 512, 'black', WindowHandle)</l>
+<l>dev_display (Image)</l>
+<c>*获取图像的中心</c>
+<l>area_center (Image, Area, X, Y)</l>
+<c></c>
+<c>*生成一个二次矩阵  </c>
+<l>hom_mat2d_identity (HomMat2DIdentity)</l>
+<c></c>
+<c>*操作矩阵, 给矩阵填入参数  </c>
+<c>*旋转 (矩阵句柄  , 旋转角度 , 旋转中心X , 旋转中心y , 输出的旋转矩阵句柄)</c>
+<l>*hom_mat2d_rotate (HomMat2DIdentity,rad(90), X, Y, HomMat2DRotate)</l>
+<c>*平移矩阵 (以 0.0 为原点 y 轴平移 100 , x轴平移 200)</c>
+<l>*hom_mat2d_translate (HomMat2DIdentity, 100, 200, HomMat2DTranslate)</l>
+<c>*缩放矩阵  (y缩放0.5 , x缩放0.8)</c>
+<l>*hom_mat2d_scale (HomMat2DIdentity, 0.5, 0.8, Y, X, HomMat2DScale)</l>
+<c>*斜切矩阵(以 0.0 为原点 , 沿 y 轴, 斜切 -20度)</c>
+<l>hom_mat2d_slant (HomMat2DIdentity, rad(-20), 'y', 0, 0, HomMat2DSlant)</l>
+<c></c>
+<c>*平移 </c>
+<l>*hom_mat2d_translate (HomMat2DIdentity, 200, 200, HomMat2DTranslate)</l>
+<c>*旋转平移同时使用 </c>
+<l>*hom_mat2d_rotate (HomMat2DIdentity, rad(20), X, Y, HomMat2DRotate)</l>
+<c>*缩放</c>
+<l>*hom_mat2d_scale (HomMat2DRotate, 0.5, 0.5, X, Y, HomMat2DScale)</l>
+<c></c>
+<c></c>
+<c></c>
+<c>*进行仿射变换 (需要变换的图片 , 变换过后的图片 , 矩阵句柄)</c>
+<l>affine_trans_image (Image, ImageAffineTrans, HomMat2DSlant, 'constant', 'false')</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

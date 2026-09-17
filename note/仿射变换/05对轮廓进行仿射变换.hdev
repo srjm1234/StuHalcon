@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="17.12">
+<procedure name="main">
+<interface/>
+<body>
+<l>dev_close_window ()</l>
+<l>dev_open_window (0, 0, 512, 512, 'black', WindowHandle)</l>
+<c>*把这块区域缩小 0.5 并放到 屏幕中间</c>
+<l>gen_region_polygon_filled (Region, [100,50,50,100,300,300,300,100], \
+                                   [50,100,200,400,400,200,50,50])</l>
+<c>*先把区域转换成轮廓 </c>
+<l>gen_contour_region_xld (Region, Contours, 'border')</l>
+<c>*获取中心和角度</c>
+<l>area_center_xld (Contours, Area, Row, Column, PointOrder)</l>
+<l>orientation_xld (Contours, Phi)</l>
+<c>*刚性矩阵 </c>
+<l>vector_angle_to_rigid (Row, Column, Phi,512/2, 512/2, Phi, HomMat2D)</l>
+<c>*缩小  </c>
+<l>hom_mat2d_scale (HomMat2D, 0.5, 0.5, Row, Column, HomMat2DScale)</l>
+<c>*仿射变换 </c>
+<l>affine_trans_contour_xld (Contours, ContoursAffineTrans, HomMat2DScale)</l>
+<l>dev_clear_window ()</l>
+<l>dev_display (ContoursAffineTrans)</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

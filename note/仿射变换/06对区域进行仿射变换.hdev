@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="17.12">
+<procedure name="main">
+<interface/>
+<body>
+<c>*对区域进行仿射变换</c>
+<l>read_image (Image, 'printer_chip/printer_chip_01')</l>
+<c>*二值化处理</c>
+<l>threshold (Image, Region, 128, 255)</l>
+<c>*分割</c>
+<l>connection (Region, ConnectedRegions)</l>
+<c>*赛选</c>
+<l>select_shape (ConnectedRegions, SelectedRegions, 'area', 'and', 23046.5, 31388.6)</l>
+<c>*选一块区域</c>
+<l>select_obj (SelectedRegions, ObjectSelected, 1)</l>
+<l>dev_clear_window ()</l>
+<l>dev_display (Image)</l>
+<l>dev_display (ObjectSelected)</l>
+<l>stop ()</l>
+<c>*获取区域中心  </c>
+<l>area_center (ObjectSelected, Area, Row, Column)</l>
+<c>*获取区域角度</c>
+<l>orientation_region (ObjectSelected, Phi)</l>
+<c>*获取图像中心</c>
+<l>area_center (Image, Area1, Row1, Column1)</l>
+<c>*刚性矩阵 </c>
+<l>vector_angle_to_rigid ( Row, Column, Phi, Row1, Column1, Phi, HomMat2D)</l>
+<c>*仿射变换</c>
+<l>affine_trans_region (ObjectSelected, RegionAffineTrans, HomMat2D, 'nearest_neighbor')</l>
+<l>dev_clear_window ()</l>
+<l>dev_display (Image)</l>
+<l>dev_display (ObjectSelected)</l>
+<l>dev_display (RegionAffineTrans)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

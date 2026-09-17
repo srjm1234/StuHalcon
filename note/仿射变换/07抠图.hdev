@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="17.12">
+<procedure name="main">
+<interface/>
+<body>
+<c>*1.画区域 2.区域抠出来当模版 </c>
+<l>read_image (Image, 'clip')</l>
+<l>dev_close_window ()</l>
+<c>*获取图片大小</c>
+<l>get_image_size (Image, Width, Height)</l>
+<c>*打开新窗口</c>
+<l>dev_open_window (30, 300, Width/1.5, Height/1.5, 'black', WindowHandle)</l>
+<c>*显示图片</c>
+<l>dev_display (Image)</l>
+<c>**设置显示模式</c>
+<l>dev_set_draw ('margin')</l>
+<l>dev_set_line_width (3)</l>
+<c>*划一块roi 区域  </c>
+<l>draw_rectangle2 (WindowHandle, Row, Column, Phi, Length1, Length2)</l>
+<c>*画矩形</c>
+<l>gen_rectangle2 (Rectangle, Row, Column, Phi, Length1, Length2)</l>
+<l>dev_clear_window ()</l>
+<l>dev_display (Image)</l>
+<l>dev_display (Rectangle)</l>
+<c>*画出来的区域, 扣下来当模版  </c>
+<c>*两块区域的交集 (全图和 画出的区域 当模版匹配的模版)</c>
+<l>reduce_domain (Image, Rectangle, ImageReduced)</l>
+<c>*抠图(把图像部分留下, 会改变大小 )</c>
+<l>crop_domain (ImageReduced, ImagePart)</l>
+<l>dev_clear_window ()</l>
+<l>dev_display (ImageReduced)</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
