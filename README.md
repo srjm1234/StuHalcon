@@ -6,16 +6,18 @@ HALCON 机器视觉学习笔记库（Obsidian Vault）。
 
 ```
 StuHalcon/
-├── Halcon学习笔记/           # 整理后的笔记（13 篇）
+├── Halcon学习笔记/           # 整理后的笔记（14 篇）
 │   ├── 00 Halcon学习地图.md  # MOC：知识地图与索引，建议从这里开始
 │   ├── 01 ~ 09 ...          # Blob 分析主线
 │   ├── 10 算子速查表.md      # 按功能分类的算子索引
 │   ├── 11 ~ 12 ...          # 仿射变换（矩阵 / 区域 / 轮廓 / 抠图）
+│   ├── 13 ...               # 形态学调参专题（结构元半径标定）
 │   └── assets/              # 笔记内嵌图片（由 note/ 下的 BMP 转换而来）
 └── note/                    # 原始素材（只读）
     ├── *.hdev               # HDevelop 练习工程（本质是 XML）
     ├── 仿射变换/*.hdev       # 仿射变换练习（01~07）
     ├── x1~x5.bmp            # 滤波与形态学练习素材
+    ├── 形态学调整/1~5.bmp     # 形态学调参素材（与 x1~x5.bmp 同图异名，见笔记 13 附录）
     ├── 套环检测/*.BMP        # 套环检测素材（800×600）
     └── 讲义.docx            # select_shape 特征清单
 ```
@@ -37,12 +39,15 @@ StuHalcon/
 | 10 | [算子速查表](Halcon学习笔记/10%20算子速查表.md) | 按功能分类的算子索引 |
 | 11 | [仿射变换矩阵与图像变换](Halcon学习笔记/11%20仿射变换矩阵与图像变换.md) | 齐次矩阵 `HomMat2D`、Row/Column 约定、`vector_angle_to_rigid`、反解参数 |
 | 12 | [仿射变换实战 区域轮廓与抠图](Halcon学习笔记/12%20仿射变换实战%20区域轮廓与抠图.md) | 三对象变换、区域↔轮廓、`reduce_domain` / `crop_domain` 抠图 |
+| 13 | [形态学调整 结构元半径标定](Halcon学习笔记/13%20形态学调整%20结构元半径标定.md) | 距离变换求半径下限、开/闭运算半径扫描标定、三个实测坑 |
 
 ## 学习路线
 
 **主线（Blob 分析）**：`read_image` → 预处理（滤波/增强）→ `threshold` → `connection` → 区域运算/形态学 → `select_shape` → 测量 → 可视化
 
 **支线（几何变换）**：测量拿到 `(Row, Column, Phi)` → `vector_angle_to_rigid` 构造 `HomMat2D` → `affine_trans_image` / `affine_trans_region` / `affine_trans_contour_xld` → `reduce_domain` + `crop_domain` 抠 ROI
+
+**专题（参数标定）**：`threshold` → 区分字符/缺陷 → `distance_transform` 求缺陷内切圆半径 → 贴着下限取 `opening_circle` / `closing_circle` 的 `Radius`（见 [笔记 13](Halcon学习笔记/13%20形态学调整%20结构元半径标定.md)）
 
 配合 `note/` 下对应的 `.hdev` 练习，在 HDevelop 里按 `F6` 单步执行，逐段观察中间结果。
 
