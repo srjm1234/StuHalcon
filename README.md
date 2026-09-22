@@ -6,7 +6,7 @@ HALCON 机器视觉学习笔记库（Obsidian Vault）。
 
 ```
 StuHalcon/
-├── Halcon学习笔记/           # 整理后的笔记（17 篇）
+├── Halcon学习笔记/           # 整理后的笔记（18 篇）
 │   ├── 00 Halcon学习地图.md  # MOC：知识地图与索引，建议从这里开始
 │   ├── 01 ~ 09 ...          # Blob 分析主线
 │   ├── 10 算子速查表.md      # 按功能分类的算子索引
@@ -15,6 +15,7 @@ StuHalcon/
 │   ├── 14 ...               # 模板匹配（形状匹配 / 带缩放的 aniso 系列）
 │   ├── 15 ...               # 2D 计量（卡尺测量 / 距离家族 / 先定位后测量）
 │   ├── 16 ...               # 读码与 OCR（一维码 / 二维码 / 字符识别）
+│   ├── 17 ...               # 综合实战（作业题 / OK-NG 判定 / 源码纠错）
 │   └── assets/              # 笔记内嵌图片（由 note/ 下的 BMP 转换而来）
 └── note/                    # 原始素材（只读）
     ├── *.hdev               # HDevelop 练习工程（本质是 XML）
@@ -26,6 +27,8 @@ StuHalcon/
     ├── 读码与OCR/*.hdev      # 读码练习（01~06）+ 字符识别（06字符识别）
     ├── 读码与OCR/End13/*.png  # EAN-13 素材（15 张）
     ├── 读码与OCR/qrcode/*.png # 工件上的 QR 码素材（9 张）
+    ├── 综合练习/*.hdev        # 五份作业（骰子 / 齿轮 / 传感器 / 一维码+OCR / QR）
+    ├── 综合练习/img/、img1/、QR码/、一维码+ocr/、传感器/  # 对应素材（传感器单张 5.7MB，仅留 1 张样本）
     ├── x1~x5.bmp            # 滤波与形态学练习素材
     ├── 形态学调整/1~5.bmp     # 形态学调参素材（与 x1~x5.bmp 同图异名，见笔记 13 附录）
     ├── 套环检测/*.BMP        # 套环检测素材（800×600）
@@ -53,6 +56,7 @@ StuHalcon/
 | 14 | [模板匹配 形状匹配](Halcon学习笔记/14%20模板匹配%20形状匹配.md) | 抠 ROI 建形状模型、`create/find_shape_model` 参数全解、带缩放的 aniso 系列、仿射回显 |
 | 15 | [测量模型 2D Metrology](Halcon学习笔记/15%20测量模型%202D%20Metrology.md) | 卡尺原理、`add_metrology_object_*_measure` 参数全解、`all_param` 下标映射、`distance_*` 距离家族、先定位后测量 |
 | 16 | [读码与 OCR](Halcon学习笔记/16%20读码与%20OCR.md) | 一维码 / 二维码 / 文字 OCR 三条链路、码制清单、降噪排查顺序、`.occ`/`.omc` 分类器 |
+| 17 | [综合实战 五个作业题与判定逻辑](Halcon学习笔记/17%20综合实战%20五个作业题与判定逻辑.md) | 五份作业串起全部主线、OK/NG 判定的四种判据与容差、**逐份源码纠错（9 个真实 bug）** |
 
 ## 学习路线
 
@@ -67,6 +71,8 @@ StuHalcon/
 **支线（识别）**：`create_bar_code_model` → `find_bar_code` → `get_bar_code_result`；或 `create_data_code_2d_model` → `find_data_code_2d`（难读时先 `median_image` / `gray_opening_shape` 降噪）；或 `create_text_model_reader` → `find_text` → `get_text_result`（见 [笔记 16](Halcon学习笔记/16%20读码与%20OCR.md)）
 
 **专题（参数标定）**：`threshold` → 区分字符/缺陷 → `distance_transform` 求缺陷内切圆半径 → 贴着下限取 `opening_circle` / `closing_circle` 的 `Radius`（见 [笔记 13](Halcon学习笔记/13%20形态学调整%20结构元半径标定.md)）
+
+**收尾（判定与工程化）**：测出结果之后还要落 OK/NG —— 计数 / 尺寸 / 面积 / 交叉验证四种判据怎么写、容差怎么定、以及"循环里用错变量"这类源码 bug 怎么排查（见 [笔记 17](Halcon学习笔记/17%20综合实战%20五个作业题与判定逻辑.md)）
 
 配合 `note/` 下对应的 `.hdev` 练习，在 HDevelop 里按 `F6` 单步执行，逐段观察中间结果。
 
