@@ -77,6 +77,21 @@ flowchart TD
 > ```
 > 一句话概括：**Blob 是"按长相筛"，模板匹配是"照着照片找人"。** 完整参数拆解见 [[14 模板匹配 形状匹配]]。
 
+> [!tip] 第 7 步"测量"还有一条支线：2D 计量 + 先定位后测量
+> `area_center` 只能给到"像素级质心"。要**亚像素级地量一条直线 / 一个圆 / 一个矩形**，用的是 **2D Metrology**：
+> 画一个近似形状 → HALCON 沿边界自动摆一排卡尺 → 逐个卡尺提边缘 → RANSAC 拟合成真实几何形状。
+>
+> ```mermaid
+> flowchart LR
+>     S["画近似形状<br/>draw_line / draw_circle"] --> M["create_metrology_model<br/>+ add_metrology_object_*_measure"]
+>     M --> A["apply_metrology_model"]
+>     A --> R["get_metrology_object_result<br/>圆: row,column,radius<br/>线: 起点+终点<br/>矩形: row,column,phi,l1,l2"]
+>     R --> D["distance_pp / distance_pl / distance_cc / distance_lc<br/>算出真正的尺寸"]
+>     P["find_shape_model<br/>定位 Row,Column,Angle"] --> RS["set_metrology_model_param<br/>'reference_system'（只设一次）"]
+>     RS --> AL["每张图 align_metrology_model<br/>→ 再 apply"]
+> ```
+> 完整参数拆解与 13 个坑见 [[15 测量模型 2D Metrology]]。
+
 > [!tip] 第 5 步里的形态学，还有一个"怎么定半径"的问题
 > `opening_circle` / `closing_circle` 的 `Radius` 不该靠试：**缺陷的内切圆半径就是半径的理论下限**（距离变换可算），
 > 再贴着它取值即可。完整标定流程与 5 张素材的实测数据见 [[13 形态学调整 结构元半径标定]]。
@@ -99,6 +114,7 @@ flowchart TD
 | 12 | [[12 仿射变换实战 区域轮廓与抠图]] | 三对象变换、区域↔轮廓、ROI 抠图 | `仿射变换/04~07*.hdev` |
 | 13 | [[13 形态学调整 结构元半径标定]] | 用距离变换算出半径下限，扫描标定开/闭运算半径 | `形态学调整/1~5.bmp` |
 | 14 | [[14 模板匹配 形状匹配]] | 抠 ROI 建形状模型 → `find_shape_model` → 仿射变换回显；含带缩放的 aniso 系列 | `模板匹配/01~03*.hdev` |
+| 15 | [[15 测量模型 2D Metrology]] | 画近似形状 → 自动摆卡尺 → RANSAC 拟合；`distance_*` 距离家族；先定位后测量 | `测量/01~05*.hdev`、`测量/my/*.hdev` |
 
 ## 四、算子命名规律（会读名字就会用一半）
 
@@ -139,6 +155,11 @@ flowchart TD
 - [ ] 模型的原点默认在哪？`get_shape_model_contours` 取出的轮廓为什么显示在左上角？
 - [ ] `find_shape_model` 里 `NumMatches=0` 和 `=1` 分别是什么意思？为什么 `=1` 不一定是最高分？
 - [ ] 目标大小会变时该用哪个系列？`ScaleR` 和 `ScaleC` 分别管哪个方向？
+- [ ] 2D 计量的五步是什么？`MeasureLength1` 和 `MeasureLength2` 分别管卡尺的哪个方向？
+- [ ] `num_measures` 和 `measure_distance` 为什么不能同时生效？卡尺数量下限分别是多少？
+- [ ] `all_param` 对 circle / line / rectangle2 的输出顺序各是什么？
+- [ ] `get_metrology_object_model_contour` / `..._measures` / `..._result_contour` 分别拿到什么？
+- [ ] "先定位后测量"里 `reference_system` 和 `align_metrology_model` 分别在什么时候调用？
 
 ## 六、环境与快捷键备忘
 
