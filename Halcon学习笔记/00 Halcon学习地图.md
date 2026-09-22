@@ -63,6 +63,20 @@ flowchart TD
 > ```
 > 一句话概括：**测量给出"目标在哪、朝向如何"，仿射变换负责"把它挪到该在的地方"。**
 
+> [!tip] 第 4 步"抠出 ROI"之后还有一条支线：模板匹配
+> 上面那条支线末尾提到的 `reduce_domain` 抠 ROI，**正是模板匹配的起点** ——
+> 把 ROI 交给 `create_shape_model` 训练成模型，再用 `find_shape_model` 在整幅图里按**轮廓形状**把它找出来：
+>
+> ```mermaid
+> flowchart LR
+>     R["reduce_domain<br/>抠出 ROI"] --> C["create_shape_model<br/>训练 → ModelID"]
+>     C --> F["find_shape_model<br/>→ Row, Column, Angle, Score"]
+>     C --> G["get_shape_model_contours<br/>轮廓（原点在 0,0）"]
+>     F --> H["hom_mat2d_* + affine_trans_contour_xld<br/>把轮廓搬到结果位置"]
+>     G --> H
+> ```
+> 一句话概括：**Blob 是"按长相筛"，模板匹配是"照着照片找人"。** 完整参数拆解见 [[14 模板匹配 形状匹配]]。
+
 > [!tip] 第 5 步里的形态学，还有一个"怎么定半径"的问题
 > `opening_circle` / `closing_circle` 的 `Radius` 不该靠试：**缺陷的内切圆半径就是半径的理论下限**（距离变换可算），
 > 再贴着它取值即可。完整标定流程与 5 张素材的实测数据见 [[13 形态学调整 结构元半径标定]]。
@@ -84,6 +98,7 @@ flowchart TD
 | 11 | [[11 仿射变换矩阵与图像变换]] | 齐次矩阵、Row/Column 约定、刚性矩阵、反解参数 | `仿射变换/01~03*.hdev` |
 | 12 | [[12 仿射变换实战 区域轮廓与抠图]] | 三对象变换、区域↔轮廓、ROI 抠图 | `仿射变换/04~07*.hdev` |
 | 13 | [[13 形态学调整 结构元半径标定]] | 用距离变换算出半径下限，扫描标定开/闭运算半径 | `形态学调整/1~5.bmp` |
+| 14 | [[14 模板匹配 形状匹配]] | 抠 ROI 建形状模型 → `find_shape_model` → 仿射变换回显；含带缩放的 aniso 系列 | `模板匹配/01~03*.hdev` |
 
 ## 四、算子命名规律（会读名字就会用一半）
 
@@ -119,6 +134,11 @@ flowchart TD
 - [ ] 多个 `hom_mat2d_*` 叠加时，先写的先作用还是后写的先作用？固定点该写哪个坐标系下的位置？
 - [ ] `affine_trans_image` / `region` / `contour_xld` 三者分别适合什么场景？
 - [ ] `reduce_domain` 和 `crop_domain` 谁改变了图像矩阵的尺寸？
+- [ ] 形状匹配的五步流程是什么？为什么抠模板要用 `reduce_domain` 而不是 `crop_domain`？
+- [ ] `create_shape_model` 的 `Metric` 四档分别允许什么样的对比度变化？喂 RGB 图会怎样？
+- [ ] 模型的原点默认在哪？`get_shape_model_contours` 取出的轮廓为什么显示在左上角？
+- [ ] `find_shape_model` 里 `NumMatches=0` 和 `=1` 分别是什么意思？为什么 `=1` 不一定是最高分？
+- [ ] 目标大小会变时该用哪个系列？`ScaleR` 和 `ScaleC` 分别管哪个方向？
 
 ## 六、环境与快捷键备忘
 
