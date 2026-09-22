@@ -92,6 +92,18 @@ flowchart TD
 > ```
 > 完整参数拆解与 13 个坑见 [[15 测量模型 2D Metrology]]。
 
+> [!tip] 还有一条完全独立的支线：识别（读码 / OCR）
+> 前面所有笔记都在"找位置、量尺寸"，而**读码与字符识别**问的是"上面写了什么"。
+> 它们各自成链，套路却和前面一致 —— **建句柄 → 找 → 取结果（字符串 + 区域）→ 释放句柄**：
+>
+> ```mermaid
+> flowchart LR
+>     A["一维条码<br/>create_bar_code_model<br/>find_bar_code"] --> D["DecodedDataStrings<br/>+ SymbolRegions (Region)"]
+>     B["二维码<br/>create_data_code_2d_model<br/>find_data_code_2d"] --> E["DecodedDataStrings<br/>+ SymbolXLDs (XLD)"]
+>     C["文字 OCR<br/>create_text_model_reader<br/>find_text"] --> F["get_text_result 'class'<br/>+ get_text_object"]
+> ```
+> 三条链路的参数、码制清单、降噪排查顺序见 [[16 读码与 OCR]]。
+
 > [!tip] 第 5 步里的形态学，还有一个"怎么定半径"的问题
 > `opening_circle` / `closing_circle` 的 `Radius` 不该靠试：**缺陷的内切圆半径就是半径的理论下限**（距离变换可算），
 > 再贴着它取值即可。完整标定流程与 5 张素材的实测数据见 [[13 形态学调整 结构元半径标定]]。
@@ -115,6 +127,7 @@ flowchart TD
 | 13 | [[13 形态学调整 结构元半径标定]] | 用距离变换算出半径下限，扫描标定开/闭运算半径 | `形态学调整/1~5.bmp` |
 | 14 | [[14 模板匹配 形状匹配]] | 抠 ROI 建形状模型 → `find_shape_model` → 仿射变换回显；含带缩放的 aniso 系列 | `模板匹配/01~03*.hdev` |
 | 15 | [[15 测量模型 2D Metrology]] | 画近似形状 → 自动摆卡尺 → RANSAC 拟合；`distance_*` 距离家族；先定位后测量 | `测量/01~05*.hdev`、`测量/my/*.hdev` |
+| 16 | [[16 读码与 OCR]] | 一维码 / 二维码 / 文字 OCR 三条链路；降噪排查；`.occ`/`.omc` 分类器 | `读码与OCR/*.hdev` |
 
 ## 四、算子命名规律（会读名字就会用一半）
 
@@ -160,6 +173,10 @@ flowchart TD
 - [ ] `all_param` 对 circle / line / rectangle2 的输出顺序各是什么？
 - [ ] `get_metrology_object_model_contour` / `..._measures` / `..._result_contour` 分别拿到什么？
 - [ ] "先定位后测量"里 `reference_system` 和 `align_metrology_model` 分别在什么时候调用？
+- [ ] 一维码 / 二维码 / OCR 三条链路的"建模型—执行—取结果"算子分别叫什么？
+- [ ] `get_bar_code_result (…, 'orientation', …)` 返回的是度还是弧度？条码是"深底浅码"时怎么办？
+- [ ] 中文路径 / 中文内容读码要加哪一句？
+- [ ] `Universal_0-9A-Z_Rej.occ` 这个 OCR 分类器文件名每一段代表什么？
 
 ## 六、环境与快捷键备忘
 

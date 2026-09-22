@@ -6,7 +6,7 @@ HALCON 机器视觉学习笔记库（Obsidian Vault）。
 
 ```
 StuHalcon/
-├── Halcon学习笔记/           # 整理后的笔记（16 篇）
+├── Halcon学习笔记/           # 整理后的笔记（17 篇）
 │   ├── 00 Halcon学习地图.md  # MOC：知识地图与索引，建议从这里开始
 │   ├── 01 ~ 09 ...          # Blob 分析主线
 │   ├── 10 算子速查表.md      # 按功能分类的算子索引
@@ -14,6 +14,7 @@ StuHalcon/
 │   ├── 13 ...               # 形态学调参专题（结构元半径标定）
 │   ├── 14 ...               # 模板匹配（形状匹配 / 带缩放的 aniso 系列）
 │   ├── 15 ...               # 2D 计量（卡尺测量 / 距离家族 / 先定位后测量）
+│   ├── 16 ...               # 读码与 OCR（一维码 / 二维码 / 字符识别）
 │   └── assets/              # 笔记内嵌图片（由 note/ 下的 BMP 转换而来）
 └── note/                    # 原始素材（只读）
     ├── *.hdev               # HDevelop 练习工程（本质是 XML）
@@ -22,6 +23,9 @@ StuHalcon/
     ├── 测量/*.hdev           # 2D 计量练习（01~05）+ my/ 子目录
     ├── 测量/测量/*.bmp        # 计量素材（0/2/3.bmp，同一零件不同姿态）
     ├── 测量/test*.bmp        # 点到线/点到点练习素材
+    ├── 读码与OCR/*.hdev      # 读码练习（01~06）+ 字符识别（06字符识别）
+    ├── 读码与OCR/End13/*.png  # EAN-13 素材（15 张）
+    ├── 读码与OCR/qrcode/*.png # 工件上的 QR 码素材（9 张）
     ├── x1~x5.bmp            # 滤波与形态学练习素材
     ├── 形态学调整/1~5.bmp     # 形态学调参素材（与 x1~x5.bmp 同图异名，见笔记 13 附录）
     ├── 套环检测/*.BMP        # 套环检测素材（800×600）
@@ -48,6 +52,7 @@ StuHalcon/
 | 13 | [形态学调整 结构元半径标定](Halcon学习笔记/13%20形态学调整%20结构元半径标定.md) | 距离变换求半径下限、开/闭运算半径扫描标定、三个实测坑 |
 | 14 | [模板匹配 形状匹配](Halcon学习笔记/14%20模板匹配%20形状匹配.md) | 抠 ROI 建形状模型、`create/find_shape_model` 参数全解、带缩放的 aniso 系列、仿射回显 |
 | 15 | [测量模型 2D Metrology](Halcon学习笔记/15%20测量模型%202D%20Metrology.md) | 卡尺原理、`add_metrology_object_*_measure` 参数全解、`all_param` 下标映射、`distance_*` 距离家族、先定位后测量 |
+| 16 | [读码与 OCR](Halcon学习笔记/16%20读码与%20OCR.md) | 一维码 / 二维码 / 文字 OCR 三条链路、码制清单、降噪排查顺序、`.occ`/`.omc` 分类器 |
 
 ## 学习路线
 
@@ -58,6 +63,8 @@ StuHalcon/
 **支线（模板匹配）**：`reduce_domain` 抠 ROI → `create_shape_model` 训练 → `find_shape_model` 查找 → `get_shape_model_contours` 取轮廓 → `hom_mat2d_*` + `affine_trans_contour_xld` 回显（目标大小会变时改用 `create_aniso_shape_model` / `find_aniso_shape_model`，见 [笔记 14](Halcon学习笔记/14%20模板匹配%20形状匹配.md)）
 
 **专题（2D 计量）**：画近似形状 → `add_metrology_object_*_measure` 自动摆卡尺 → `apply_metrology_model` 拟合 → `get_metrology_object_result` 取参数 → `distance_pp` / `distance_pl` / `distance_cc` 算尺寸；零件会跑位时配合 `create_shape_model` + `reference_system` + `align_metrology_model` 做"先定位后测量"（见 [笔记 15](Halcon学习笔记/15%20测量模型%202D%20Metrology.md)）
+
+**支线（识别）**：`create_bar_code_model` → `find_bar_code` → `get_bar_code_result`；或 `create_data_code_2d_model` → `find_data_code_2d`（难读时先 `median_image` / `gray_opening_shape` 降噪）；或 `create_text_model_reader` → `find_text` → `get_text_result`（见 [笔记 16](Halcon学习笔记/16%20读码与%20OCR.md)）
 
 **专题（参数标定）**：`threshold` → 区分字符/缺陷 → `distance_transform` 求缺陷内切圆半径 → 贴着下限取 `opening_circle` / `closing_circle` 的 `Radius`（见 [笔记 13](Halcon学习笔记/13%20形态学调整%20结构元半径标定.md)）
 
